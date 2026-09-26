@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台灣恐懼與貪婪指數</title>
+<meta name="description" content="台灣恐懼與貪婪指數（TWGFI）每日快照：主指數、8 個組成面向、當日市場解讀與總體經濟。每交易日更新。">
+<meta property="og:title" content="台灣恐懼與貪婪指數 TWGFI">
+<meta property="og:description" content="每交易日更新的台股市場情緒觀測。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Cpath d='M10 55A40 40 0 0 1 90 55' fill='none' stroke='%23e8833a' stroke-width='14'/%3E%3Cpath d='M50 55L72 22' stroke='%23333' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#f6f5f2; --card:#ffffff; --ink:#1d2127; --muted:#666d77; --line:#e4e2dc; --soft:#efede8;
+  --red:#d2453b; --orange:#e7823a; --amber:#d9a520; --lime:#86b43a; --green:#2f9a5a;
+  --blue:#3b72c4; --teal:#2a9d9a; --neutral:#8a919b; --accent:#1d2127;
+  --shadow:0 1px 2px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417; --card:#1b1e23; --ink:#e9eaec; --muted:#9aa1ab; --line:#2b2f36; --soft:#23272d;
+    --red:#ef6a5f; --orange:#f39a55; --amber:#e8bd45; --lime:#a2cf55; --green:#4cc07c;
+    --blue:#6b9be0; --teal:#4cc0bc; --neutral:#8f969f; --accent:#e9eaec; --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417; --card:#1b1e23; --ink:#e9eaec; --muted:#9aa1ab; --line:#2b2f36; --soft:#23272d;
+  --red:#ef6a5f; --orange:#f39a55; --amber:#e8bd45; --lime:#a2cf55; --green:#4cc07c;
+  --blue:#6b9be0; --teal:#4cc0bc; --neutral:#8f969f; --accent:#e9eaec; --shadow:none;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 "PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;}
+.wrap{max-width:880px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+h1{font-size:22px;line-height:1.3;margin:0;letter-spacing:.02em}
+h1 small{display:block;font-size:13px;font-weight:500;color:var(--muted);letter-spacing:.04em;margin-top:2px}
+h1 small.by{letter-spacing:.02em;margin-top:4px}
+.hbtn{display:flex;gap:6px;flex:none}
+html[lang="en"] body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans TC","Microsoft JhengHei",sans-serif}
+.theme{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:8px;
+  padding:6px 10px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.meta{font-size:13px;color:var(--muted);margin:-4px 0 16px}
+.meta b{color:var(--ink);font-weight:600}
+.stale{display:none;background:color-mix(in srgb,var(--amber) 16%,transparent);border:1px solid var(--amber);
+  border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card h2{font-size:15px;margin:0 0 12px;color:var(--muted);font-weight:600;letter-spacing:.04em}
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:center}
+@media (max-width:620px){.hero{grid-template-columns:1fr}}
+.gauge svg{width:100%;height:auto;display:block;max-width:360px;margin:0 auto}
+.big{text-align:center;margin-top:-6px}
+.big .v{font-size:56px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.big .lab{font-size:20px;font-weight:700;margin-top:6px}
+.big .d{font-size:14px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
+.cmp{list-style:none;margin:0;padding:0}
+.cmp li{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 0;border-bottom:1px solid var(--line)}
+.cmp li:last-child{border-bottom:0}
+.cmp .k{font-size:14px;color:var(--muted)}
+.cmp .k i{font-style:normal;font-size:12px;display:block;opacity:.8}
+.pill{display:inline-flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums;font-weight:600}
+.pill span{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;color:#fff}
+.taiex{margin-top:12px;font-size:13px;color:var(--muted);text-align:center}
+.taiex b{color:var(--ink);font-variant-numeric:tabular-nums}
+.chart-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.chart-head h2{margin:0}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13px;padding:5px 11px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+#chart{width:100%;height:auto;display:block;touch-action:pan-y}
+#pchart{width:100%;height:auto;display:block;touch-action:pan-y}
+.pstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:4px 0 10px}
+.pstats div{background:var(--soft);border-radius:10px;padding:8px 12px;font-size:13px;color:var(--muted)}
+.pstats b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+.pstats span{font-variant-numeric:tabular-nums;color:var(--ink)}
+.pnote{font-size:12px;color:var(--muted);margin:8px 0 0}
+.ptable{width:100%;border-collapse:collapse;margin:12px 0 4px;font-size:13px;font-variant-numeric:tabular-nums}
+.ptable caption{text-align:left;font-size:13px;color:var(--muted);padding-bottom:6px}
+.ptable th,.ptable td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.ptable th:first-child,.ptable td:first-child{text-align:left;white-space:normal;color:var(--muted)}
+.ptable thead th{color:var(--ink);font-weight:600;font-size:12px;vertical-align:bottom;white-space:normal}
+.ptable tr.grp td{color:var(--ink);font-weight:600;background:var(--soft);font-size:12px;text-align:left}
+.ptable .best{color:var(--ink);font-weight:700}
+@media (max-width:420px){.ptable th,.ptable td{padding:6px 4px;font-size:12px}}
+.tip{font-size:13px;color:var(--muted);min-height:1.6em;text-align:right;font-variant-numeric:tabular-nums}
+.nar h3{font-size:21px;margin:0 0 8px;line-height:1.4}
+.nar p{margin:0 0 6px}
+.facets{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media (max-width:620px){.facets{grid-template-columns:1fr}}
+.facet{border-radius:10px;padding:12px 14px;background:var(--soft)}
+.facet h4{margin:0 0 6px;font-size:14px}
+.facet ul{margin:0;padding-left:18px;font-size:14px}
+.facet.on h4{color:var(--green)} .facet.pr h4{color:var(--red)} .facet.dv h4{color:var(--orange)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+@media (max-width:620px){.grid{grid-template-columns:1fr 1fr;gap:8px}.comp{padding:10px 11px}.comp .name{font-size:15px}}
+.comp{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.comp .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.comp .name{font-weight:600}
+.comp .grp{font-size:12px;color:var(--muted)}
+.comp .num{font-variant-numeric:tabular-nums;font-weight:700}
+.bar{position:relative;height:8px;border-radius:99px;background:var(--soft);margin:10px 0 6px}
+.bar i{position:absolute;top:-3px;width:14px;height:14px;border-radius:50%;border:2px solid var(--card);transform:translateX(-50%)}
+.comp .st{font-size:13px}
+.comp .sub{font-size:12px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0}
+.macro{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.macro{grid-template-columns:1fr}}
+.mbox{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.mbox .t{font-size:13px;color:var(--muted)}
+.mbox .v{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:10px}
+.dot{width:16px;height:16px;border-radius:50%;display:inline-block;flex:none}
+.mbox .s{font-size:12px;color:var(--muted)}
+.about{font-size:14px;color:var(--muted)}
+.about p{margin:0 0 6px}
+.disc{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:6px}
+.big .s{font-size:13px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
+.cmp li.h{padding:0 0 6px;font-size:12px;color:var(--muted)}
+.cmp .two{display:flex;gap:14px}
+.cmp .two .pill{min-width:92px;justify-content:flex-end}
+.v1row{display:flex;align-items:center;gap:16px}
+.v1num{font-size:40px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.v1lab{font-size:18px;font-weight:700}
+.v1row .d{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.strip-wrap{position:relative;margin:14px 0 4px}
+.strip{display:flex;height:10px;border-radius:99px;overflow:hidden}
+.strip b{display:block;height:100%}
+.strip-wrap i{position:absolute;top:-4px;width:6px;height:18px;border-radius:3px;background:var(--ink);transform:translateX(-50%);border:1px solid var(--card)}
+.why p{margin:0 0 6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted);margin-top:2px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{flex:none}
+.hidden{display:none!important}
+.err{text-align:center;padding:40px 16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 data-i18n="h1">台灣恐懼與貪婪指數<small>Taiwan Greed &amp; Fear Index · TWGFI</small><small class="by">資料整理：Aurora財金實驗室 周德瑋（國立臺灣師範大學管理研究所）</small></h1>
+    <div class="hbtn"><button class="theme" id="lang" type="button" aria-label="Switch language / 切換語言">EN</button><button class="theme" id="theme" type="button" aria-label="切換深淺色" data-i18n="theme">深淺色</button></div>
+  </header>
+  <div class="meta" id="meta" data-i18n="loading">載入中…</div>
+  <div class="stale" id="stale"></div>
+
+  <div id="app" class="hidden">
+    <section class="card" id="sec-hero">
+      <h2 id="heroName">恐懼與貪婪指數</h2>
+      <div class="hero">
+        <div class="gauge">
+          <svg id="gauge" viewBox="-10 0 240 128" role="img" aria-label="恐懼與貪婪儀表"></svg>
+          <div class="big">
+            <div class="v" id="gv">—</div>
+            <div class="lab" id="gl">—</div>
+            <div class="s" id="gs"></div>
+            <div class="d" id="gd"></div>
+          </div>
+        </div>
+        <div>
+          <ul class="cmp" id="cmp"></ul>
+          <div class="taiex" id="taiex"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card hidden" id="sec-v1">
+      <h2 id="v1name"></h2>
+      <div class="v1row">
+        <div class="v1num" id="v1v">—</div>
+        <div><div class="v1lab" id="v1l"></div><div class="d" id="v1d"></div></div>
+      </div>
+      <div class="strip-wrap"><div class="strip" id="v1strip"></div><i id="v1mark"></i></div>
+      <p class="note" data-i18n="v1note">日報與每日影片使用此版本。</p>
+    </section>
+
+    <section class="card why hidden" id="sec-why">
+      <h2 data-i18n="why_h">兩版為何不同？</h2>
+      <p data-i18n="why_p1">TWGFI v3 依循 VIX 與 CNN Fear &amp; Greed Index 的傳統情緒解讀，將低波動視為市場恐慌程度較低；TWGFI v1 則針對台灣市場略作調整，較適合視為一種經由台灣市場歷史資料校準的擇時訊號，而非單純的情緒讀數。</p>
+      <p><span data-i18n="why_p2">實證回測顯示，v1 的設定具有較佳的策略績效，顯示「當期情緒的語意」與「對未來報酬最有效的訊號方向」未必相同。</span><span id="whyNow"></span></p>
+      <p class="note" id="v3note"></p>
+    </section>
+
+    <section class="card" id="sec-chart">
+      <div class="chart-head">
+        <h2 data-i18n="trend_h">指數走勢</h2>
+        <div class="seg" id="seg">
+          <button type="button" data-n="22" aria-pressed="false" data-i18n="w1m">1 月</button>
+          <button type="button" data-n="66" aria-pressed="true" data-i18n="w3m">3 月</button>
+          <button type="button" data-n="9999" aria-pressed="false" data-i18n="w1y">1 年</button>
+        </div>
+      </div>
+      <svg id="chart" viewBox="0 0 640 230" role="img" aria-label="TWGFI 走勢圖"></svg>
+      <div class="legend" id="legend"></div>
+      <div class="tip" id="tip">&nbsp;</div>
+    </section>
+
+    <section class="card hidden" id="sec-perf">
+      <div class="chart-head">
+        <h2 id="pname">近三年策略回測</h2>
+        <div class="seg" id="pseg">
+          <button type="button" data-n="126" aria-pressed="false">6 月</button>
+          <button type="button" data-n="252" aria-pressed="false">1 年</button>
+          <button type="button" data-n="9999" aria-pressed="true">3 年</button>
+        </div>
+      </div>
+      <div class="pstats" id="pstats"></div>
+      <svg id="pchart" viewBox="0 0 640 230" role="img" aria-label="策略回測淨值走勢圖"></svg>
+      <div class="legend" id="plegend"></div>
+      <div class="tip" id="ptip">&nbsp;</div>
+      <table class="ptable hidden" id="ptable"></table>
+      <p class="pnote" id="pnote"></p>
+    </section>
+
+    <section class="card nar" id="sec-nar">
+      <h2 data-i18n="nar_h">當日市場解讀</h2>
+      <h3 id="nt"></h3>
+      <div id="np"></div>
+      <div class="facets" id="facets"></div>
+    </section>
+
+    <section class="card" id="sec-comp">
+      <h2 data-i18n="comp_h">8 個組成面向</h2>
+      <div class="grid" id="comps"></div>
+      <p class="note" id="cnote"></p>
+      <div id="ref"></div>
+    </section>
+
+    <section class="card" id="sec-macro">
+      <h2 data-i18n="macro_h">總體經濟</h2>
+      <div class="macro" id="macro"></div>
+      <p class="note" id="mnote"></p>
+    </section>
+
+    <section class="card about">
+      <h2 data-i18n="about_h">關於本指數</h2>
+      <p data-i18n="about_p1">TWGFI 以 0 至 100 衡量台股市場情緒：越低代表市場越恐懼，越高代表越貪婪。指數由動能、波動、選擇權部位、市場廣度、強弱、風險偏好與台美公債利差等 8 個面向綜合而成。</p>
+      <p id="aboutV3" class="hidden" data-i18n="about_v3">本頁並列兩個版本：「國際慣例版」採 CNN Fear &amp; Greed 的方向慣例，以該分數在自身過去三年中的百分位（取 5 日平均）呈現；「台灣實務版」為本站長期使用的原始 TWGFI，也是每日報告與影片採用的版本。兩者使用相同的 8 個面向，實務版在部分面向上略作調整。</p>
+      <p data-i18n="about_p3">每個交易日更新兩次：早上約 06:30（納入前一晚美股收盤，數字為最終值）與傍晚約 17:30（台股收盤後的即時版）。非交易日不更新，請以頁首的資料日期為準。</p>
+      <p data-i18n="about_p4">資料整理：Aurora財金實驗室 周德瑋（國立臺灣師範大學管理研究所）。</p>
+      <p class="disc" id="disc"></p>
+    </section>
+  </div>
+  <div class="err hidden" id="err" data-i18n="err">目前無法載入資料，請稍後再試。</div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var WEEK = ["日","一","二","三","四","五","六"], WEEK_EN = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  // ── 語言（2026-09-26）：中文為預設；?lang=en 或按鈕切換，選擇只存在本機瀏覽器
+  var LANG = "zh";
+  try{ var qs = new URLSearchParams(location.search).get("lang"); if(qs === "en" || qs === "zh") LANG = qs;
+       else { var sl = localStorage.getItem("twgfi-lang"); if(sl === "en" || sl === "zh") LANG = sl; } }catch(e){}
+  var EN = {};   // 產生器每日附上的「中文原文 → 英文」對照（rep.i18n.en）；查不到就顯示中文原文，不猜
+  var TR = function(s){ return (LANG === "en" && s && EN[s]) ? EN[s] : s; };
+  var UI = {
+    title: ["台灣恐懼與貪婪指數", "Taiwan Fear & Greed Index (TWGFI)"],
+    h1: [null, 'Taiwan Fear &amp; Greed Index<small>台灣恐懼與貪婪指數 · TWGFI</small><small class="by">Compiled by Aurora Finance Lab · De-Wai (David) Chou (Graduate Institute of Management, National Taiwan Normal University)</small>'],
+    theme: [null, "Theme"],
+    loading: [null, "Loading…"],
+    v1note: [null, "This version is used in our daily report and daily video."],
+    why_h: [null, "Why do the two versions differ?"],
+    why_p1: [null, "TWGFI v3 follows the traditional sentiment reading of the VIX and the CNN Fear &amp; Greed Index, treating low volatility as a sign of less market panic; TWGFI v1 is slightly adjusted for the Taiwan market and is better viewed as a timing signal calibrated on Taiwan market history than as a pure sentiment reading."],
+    why_p2: [null, "Backtests show that the v1 setting delivers better strategy performance, suggesting that what current sentiment means and the signal direction most useful for future returns are not necessarily the same. "],
+    trend_h: [null, "Index trend"], w1m: [null, "1M"], w3m: [null, "3M"], w1y: [null, "1Y"],
+    nar_h: [null, "Today's market read"], comp_h: [null, "8 components"], macro_h: [null, "Macroeconomy"],
+    about_h: [null, "About the index"],
+    about_p1: [null, "TWGFI measures Taiwan stock market sentiment on a 0–100 scale: lower means more fear, higher means more greed. It combines 8 components: momentum, volatility, options positioning, market breadth, market strength, risk appetite, and Taiwan and US government bond yield spreads."],
+    about_v3: [null, "This page shows two versions side by side. The “International Convention Version” follows the directional convention of CNN Fear &amp; Greed and is shown as the percentile of its score within its own past three years (5-day average). The “Taiwan Practitioner Version” is the original TWGFI this site has long used, and the version used in our daily report and videos. Both use the same 8 components; the Practitioner Version makes slight adjustments to some of them."],
+    about_p3: [null, "Updated twice each trading day (Taiwan time): around 06:30, including the prior US close (final figures), and around 17:30, a preliminary version after the Taiwan close. No updates on non-trading days; please refer to the data date at the top of the page."],
+    about_p4: [null, "Compiled by Aurora Finance Lab · De-Wai (David) Chou (Graduate Institute of Management, National Taiwan Normal University)."],
+    err: [null, "Unable to load data. Please try again later."]
+  };
+  var ZH0 = {};   // 靜態元素的中文原文（第一次套用時記下，切回中文時還原）
+  function applyStatic(){
+    root.setAttribute("lang", LANG === "en" ? "en" : "zh-Hant-TW");
+    document.title = UI.title[LANG === "en" ? 1 : 0];
+    Array.prototype.forEach.call(document.querySelectorAll("[data-i18n]"), function(el){
+      var k = el.getAttribute("data-i18n");
+      if(!(k in ZH0)) ZH0[k] = el.innerHTML;
+      el.innerHTML = (LANG === "en" && UI[k] && UI[k][1] !== null) ? UI[k][1] : ZH0[k];
+    });
+    $("lang").textContent = LANG === "en" ? "中文" : "EN";
+  }
+  var L2 = function(zh, en){ return LANG === "en" ? en : zh; };
+  var root = document.documentElement;
+  var $ = function(id){ return document.getElementById(id); };
+  var cssVar = function(n){ return getComputedStyle(root).getPropertyValue("--"+n).trim() || "#888"; };
+  var has = function(v){ return v !== null && v !== undefined && !(typeof v === "number" && !isFinite(v)); };
+  var esc = function(s){ return String(s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
+  var fmt1 = function(v){ return has(v) ? Number(v).toFixed(1) : "—"; };
+  var dateZh = function(s){
+    if(!s) return "—";
+    var p = s.split("-"); var d = new Date(+p[0], +p[1]-1, +p[2]);
+    return LANG === "en" ? s + " (" + WEEK_EN[d.getDay()] + ")" : s + "（週" + WEEK[d.getDay()] + "）";
+  };
+
+  // ── 深淺色：記住使用者選擇（只存在本機瀏覽器）
+  try{ var saved = localStorage.getItem("twgfi-theme"); if(saved) root.setAttribute("data-theme", saved); }catch(e){}
+  $("theme").addEventListener("click", function(){
+    var dark = root.getAttribute("data-theme") ? root.getAttribute("data-theme") === "dark"
+             : matchMedia("(prefers-color-scheme: dark)").matches;
+    var next = dark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try{ localStorage.setItem("twgfi-theme", next); }catch(e){}
+    if(window.__rep) render(window.__rep);
+  });
+
+  applyStatic();
+  $("lang").addEventListener("click", function(){
+    LANG = LANG === "en" ? "zh" : "en";
+    try{ localStorage.setItem("twgfi-lang", LANG); }catch(e){}
+    try{ var u = new URL(location.href); if(LANG === "en") u.searchParams.set("lang", "en"); else u.searchParams.delete("lang");
+         history.replaceState(null, "", u); }catch(e){}
+    applyStatic();
+    if(window.__rep) render(window.__rep);
+  });
+
+  function bandOf(rep, v){
+    var bs = (rep.twgfi && rep.twgfi.bands) || [];
+    for(var i=0;i<bs.length;i++){ if(v < bs[i].hi || i === bs.length-1) return bs[i]; }
+    return null;
+  }
+
+  // ── 儀表
+  function drawGauge(rep, val){
+    var t = rep.twgfi, svg = $("gauge"), cx = 110, cy = 112, r = 88, w = 20;
+    var pt = function(v, rr){ var a = Math.PI*(1 - v/100); return [cx + rr*Math.cos(a), cy - rr*Math.sin(a)]; };
+    var arc = function(a, b){
+      var p = pt(a, r), q = pt(b, r);
+      return "M"+p[0].toFixed(2)+" "+p[1].toFixed(2)+" A"+r+" "+r+" 0 0 1 "+q[0].toFixed(2)+" "+q[1].toFixed(2);
+    };
+    var h = "";
+    (t.bands || []).forEach(function(b){
+      h += '<path d="'+arc(b.lo+0.6, b.hi-0.6)+'" fill="none" stroke="'+cssVar(b.color)+'" stroke-width="'+w+'"/>';
+    });
+    [0,25,45,55,75,100].forEach(function(v){
+      var p = pt(v, r+w/2+9);
+      h += '<text x="'+p[0].toFixed(1)+'" y="'+(p[1]+3).toFixed(1)+'" font-size="9" text-anchor="middle" fill="'+cssVar("muted")+'">'+v+'</text>';
+    });
+    if(has(val)){
+      var tip = pt(val, r-4), base = cssVar("ink");
+      h += '<line x1="'+cx+'" y1="'+cy+'" x2="'+tip[0].toFixed(2)+'" y2="'+tip[1].toFixed(2)+'" stroke="'+base+'" stroke-width="4" stroke-linecap="round"/>';
+      h += '<circle cx="'+cx+'" cy="'+cy+'" r="7" fill="'+base+'"/>';
+    }
+    svg.innerHTML = h;
+  }
+
+  // ── 走勢圖
+  var chartN = 66;
+  function drawChart(rep){
+    var v3 = rep.twgfi_v3, src = v3 || rep.twgfi, all = (src && src.history) || [];
+    var sub = {};
+    if(v3) ((rep.twgfi && rep.twgfi.history) || []).forEach(function(p){ sub[p.d] = p.v; });
+    var svg = $("chart");
+    if(all.length < 2){ $("sec-chart").classList.add("hidden"); return; }
+    // 手機上 viewBox 會被縮小，字級反向放大，實際顯示約維持 11px
+    var cw = svg.getBoundingClientRect().width || 640, fs = Math.min(22, 11 * Math.max(1, 640 / cw));
+    var hs = all.slice(-chartN), W = 640, H = 230 + (fs - 11) * 2, L = 12 + fs * 2.2, R = 10, T = 10, B = 12 + fs * 1.4;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    var x = function(i){ return L + (W-L-R) * (hs.length === 1 ? 0 : i/(hs.length-1)); };
+    var y = function(v){ return T + (H-T-B) * (1 - v/100); };
+    var h = "";
+    (rep.twgfi.bands || []).forEach(function(b){
+      h += '<rect x="'+L+'" y="'+y(b.hi).toFixed(1)+'" width="'+(W-L-R)+'" height="'+(y(b.lo)-y(b.hi)).toFixed(1)+'" fill="'+cssVar(b.color)+'" opacity=".10"/>';
+    });
+    [0,25,50,75,100].forEach(function(v){
+      h += '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+cssVar("line")+'" stroke-width="1"/>';
+      h += '<text x="'+(L-6)+'" y="'+(y(v)+fs*0.35)+'" font-size="'+fs+'" text-anchor="end" fill="'+cssVar("muted")+'">'+v+'</text>';
+    });
+    var ticks = cw < 480 ? 2 : 4;
+    for(var k=0;k<=ticks;k++){
+      var i = Math.round((hs.length-1)*k/ticks), d = hs[i].d.slice(5).replace("-","/");
+      if(hs.length > 200) d = hs[i].d.slice(2,7).replace("-","/");
+      h += '<text x="'+x(i).toFixed(1)+'" y="'+(H-4)+'" font-size="'+fs+'" text-anchor="'+(k===0?"start":k===ticks?"end":"middle")+'" fill="'+cssVar("muted")+'">'+d+'</text>';
+    }
+    if(v3){
+      var sp = "", pen = false;
+      hs.forEach(function(p,i){ var v = sub[p.d];
+        if(has(v)){ sp += (pen?"L":"M")+x(i).toFixed(1)+" "+y(v).toFixed(1); pen = true; } else { pen = false; } });
+      h += '<path d="'+sp+'" fill="none" stroke="'+cssVar("muted")+'" stroke-width="1.6" stroke-dasharray="5 4" stroke-linejoin="round"/>';
+    }
+    var path = hs.map(function(p,i){ return (i?"L":"M")+x(i).toFixed(1)+" "+y(p.v).toFixed(1); }).join("");
+    h += '<path d="'+path+'" fill="none" stroke="'+cssVar("ink")+'" stroke-width="2.4" stroke-linejoin="round"/>';
+    var last = hs[hs.length-1];
+    h += '<circle cx="'+x(hs.length-1).toFixed(1)+'" cy="'+y(last.v).toFixed(1)+'" r="4" fill="'+cssVar("ink")+'"/>';
+    h += '<line id="cur" x1="0" x2="0" y1="'+T+'" y2="'+(H-B)+'" stroke="'+cssVar("muted")+'" stroke-dasharray="3 3" opacity="0"/>';
+    h += '<circle id="curdot" r="5" fill="'+cssVar("accent")+'" opacity="0"/>';
+    h += '<rect id="hit" x="'+L+'" y="0" width="'+(W-L-R)+'" height="'+H+'" fill="transparent"/>';
+    svg.innerHTML = h;
+    var show = function(ev){
+      var rect = svg.getBoundingClientRect(), cxp = (ev.touches ? ev.touches[0].clientX : ev.clientX);
+      var px = (cxp - rect.left) / rect.width * W;
+      var i = Math.max(0, Math.min(hs.length-1, Math.round((px-L)/(W-L-R)*(hs.length-1))));
+      var p = hs[i], b = bandOf(rep, p.v);
+      $("cur").setAttribute("x1", x(i)); $("cur").setAttribute("x2", x(i)); $("cur").setAttribute("opacity", "1");
+      $("curdot").setAttribute("cx", x(i)); $("curdot").setAttribute("cy", y(p.v)); $("curdot").setAttribute("opacity", "1");
+      $("tip").textContent = p.d + "　" + (v3 ? L2("國際版 ", "Intl. ") : "") + fmt1(p.v) + (b ? L2("（" + b.label + "）", " (" + TR(b.label) + ")") : "") +
+        (v3 && has(sub[p.d]) ? L2("　實務版 ", "　Practitioner ") + fmt1(sub[p.d]) : "");
+    };
+    $("hit").addEventListener("mousemove", show);
+    $("hit").addEventListener("touchstart", show, {passive:true});
+    $("hit").addEventListener("touchmove", show, {passive:true});
+    $("tip").textContent = L2("最新 ", "Latest ") + last.d + "　" + (v3 ? L2("國際版 ", "Intl. ") : "") + fmt1(last.v) +
+      (v3 && has(sub[last.d]) ? L2("　實務版 ", "　Practitioner ") + fmt1(sub[last.d]) : "");
+    var sw = function(dash, wd, col){ return '<svg width="26" height="8"><line x1="0" y1="4" x2="26" y2="4" stroke="'+col+'" stroke-width="'+wd+'"'+(dash ? ' stroke-dasharray="5 4"' : '')+'/></svg>'; };
+    $("legend").innerHTML = v3
+      ? '<span>'+sw(false,2.4,cssVar("ink"))+L2('國際慣例版（過去三年百分位，5 日平均）', 'International Convention Version (3-year percentile, 5-day avg)')+'</span><span>'+sw(true,1.6,cssVar("muted"))+L2('台灣實務版（原始分數）', 'Taiwan Practitioner Version (raw score)')+'</span>'
+      : "";
+  }
+  $("seg").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    chartN = +b.getAttribute("data-n");
+    Array.prototype.forEach.call($("seg").children, function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+    if(window.__rep) drawChart(window.__rep);
+  });
+
+  // ── 策略回測淨值（2026-09-25）：區間起點重設為 100，兩條線同一起點比較
+  var perfN = 9999, perfKey = null;
+  function drawPerf(rep){
+    var st = rep.strategy, all = (st && st.series) || [], V = st || {};
+    // 2026-09-26 多期間（windows）：每個期間各自從期初重跑，曲線與績效表跟著同一個選項切換
+    var WS = (st && st.windows) || [];
+    if(WS.length){
+      if(!perfKey || !WS.some(function(w){ return w.key === perfKey; })){
+        var dw = WS.filter(function(w){ return w.default; })[0] || WS[WS.length-1]; perfKey = dw.key; }
+      $("pseg").innerHTML = WS.map(function(w){ return '<button type="button" data-k="'+esc(w.key)+'" aria-pressed="'+(w.key === perfKey)+'">'+esc(TR(w.label))+'</button>'; }).join("");
+      V = WS.filter(function(w){ return w.key === perfKey; })[0];
+      var S = V.series;
+      all = S.d.map(function(d, i){ var o = {d: d, s: S.s[i], b: S.b[i]}; if(S.c) o.c = S.c[i]; return o; });
+      perfN = 9999;
+    }
+    if(all.length < 2){ $("sec-perf").classList.add("hidden"); return; }
+    $("sec-perf").classList.remove("hidden");
+    var svg = $("pchart");
+    var cw = svg.getBoundingClientRect().width || 640, fs = Math.min(22, 11 * Math.max(1, 640 / cw));
+    var raw = all.slice(-perfN), s0 = raw[0].s, b0 = raw[0].b;
+    // 共識版（研究候選）：資料有 c 欄才畫，沒有就維持兩條線
+    var hasC = raw.every(function(p){ return typeof p.c === "number"; }), c0 = hasC ? raw[0].c : 1;
+    var hs = raw.map(function(p){ return {d: p.d, s: p.s / s0 * 100, b: p.b / b0 * 100, c: hasC ? p.c / c0 * 100 : null}; });
+    var lo = Infinity, hi = -Infinity;
+    hs.forEach(function(p){ lo = Math.min(lo, p.s, p.b); hi = Math.max(hi, p.s, p.b);
+      if(hasC){ lo = Math.min(lo, p.c); hi = Math.max(hi, p.c); } });
+    var pad = (hi - lo) * 0.06 || 1; lo -= pad; hi += pad;
+    var W = 640, H = 230 + (fs - 11) * 2, L = 12 + fs * 2.4, R = 10, T = 10, B = 12 + fs * 1.4;
+    svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+    var x = function(i){ return L + (W-L-R) * i/(hs.length-1); };
+    var y = function(v){ return T + (H-T-B) * (1 - (v-lo)/(hi-lo)); };
+    var cS = cssVar("blue"), cB = cssVar("muted"), cC = cssVar("orange"), h = "";
+    var step = Math.pow(10, Math.floor(Math.log10((hi-lo)/4))), m = (hi-lo)/4/step;
+    step *= m > 5 ? 10 : m > 2 ? 5 : m > 1 ? 2 : 1;
+    for(var g = Math.ceil(lo/step)*step; g <= hi; g += step){
+      h += '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(g).toFixed(1)+'" y2="'+y(g).toFixed(1)+'" stroke="'+cssVar("line")+'" stroke-width="1"/>';
+      h += '<text x="'+(L-6)+'" y="'+(y(g)+fs*0.35).toFixed(1)+'" font-size="'+fs+'" text-anchor="end" fill="'+cssVar("muted")+'">'+Math.round(g)+'</text>';
+    }
+    if(lo < 100 && hi > 100) h += '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(100).toFixed(1)+'" y2="'+y(100).toFixed(1)+'" stroke="'+cssVar("muted")+'" stroke-width="1" stroke-dasharray="2 3"/>';
+    var ticks = cw < 480 ? 2 : 4;
+    for(var k=0;k<=ticks;k++){
+      var i = Math.round((hs.length-1)*k/ticks), d = hs[i].d.slice(2,7).replace("-","/");
+      h += '<text x="'+x(i).toFixed(1)+'" y="'+(H-4)+'" font-size="'+fs+'" text-anchor="'+(k===0?"start":k===ticks?"end":"middle")+'" fill="'+cssVar("muted")+'">'+d+'</text>';
+    }
+    var line = function(key){ return hs.map(function(p,i){ return (i?"L":"M")+x(i).toFixed(1)+" "+y(p[key]).toFixed(1); }).join(""); };
+    h += '<path d="'+line("b")+'" fill="none" stroke="'+cB+'" stroke-width="1.6" stroke-dasharray="5 4" stroke-linejoin="round"/>';
+    if(hasC) h += '<path d="'+line("c")+'" fill="none" stroke="'+cC+'" stroke-width="2" stroke-linejoin="round"/>';
+    h += '<path d="'+line("s")+'" fill="none" stroke="'+cS+'" stroke-width="2.4" stroke-linejoin="round"/>';
+    var n = hs.length - 1, last = hs[n];
+    h += '<circle cx="'+x(n).toFixed(1)+'" cy="'+y(last.s).toFixed(1)+'" r="4" fill="'+cS+'"/>';
+    h += '<line id="pcur" x1="0" x2="0" y1="'+T+'" y2="'+(H-B)+'" stroke="'+cssVar("muted")+'" stroke-dasharray="3 3" opacity="0"/>';
+    if(hasC) h += '<circle cx="'+x(n).toFixed(1)+'" cy="'+y(last.c).toFixed(1)+'" r="4" fill="'+cC+'"/>';
+    h += '<circle id="pdotb" r="4" fill="'+cB+'" opacity="0"/><circle id="pdotc" r="4" fill="'+cC+'" opacity="0"/><circle id="pdots" r="5" fill="'+cS+'" opacity="0"/>';
+    h += '<rect id="phit" x="'+L+'" y="0" width="'+(W-L-R)+'" height="'+H+'" fill="transparent"/>';
+    svg.innerHTML = h;
+    var pct = function(v){ var r = v - 100; return (r >= 0 ? "+" : "") + r.toFixed(1) + "%"; };
+    var show = function(ev){
+      var rect = svg.getBoundingClientRect(), cxp = (ev.touches ? ev.touches[0].clientX : ev.clientX);
+      var px = (cxp - rect.left) / rect.width * W;
+      var i = Math.max(0, Math.min(n, Math.round((px-L)/(W-L-R)*n))), p = hs[i];
+      $("pcur").setAttribute("x1", x(i)); $("pcur").setAttribute("x2", x(i)); $("pcur").setAttribute("opacity", "1");
+      $("pdots").setAttribute("cx", x(i)); $("pdots").setAttribute("cy", y(p.s)); $("pdots").setAttribute("opacity", "1");
+      $("pdotb").setAttribute("cx", x(i)); $("pdotb").setAttribute("cy", y(p.b)); $("pdotb").setAttribute("opacity", "1");
+      if(hasC){ $("pdotc").setAttribute("cx", x(i)); $("pdotc").setAttribute("cy", y(p.c)); $("pdotc").setAttribute("opacity", "1"); }
+      $("ptip").textContent = p.d + L2("　策略 ", "　Strategy ") + pct(p.s) + (hasC ? L2("　共識版 ", "　Consensus ") + pct(p.c) : "") + "　0050 " + pct(p.b);
+    };
+    $("phit").addEventListener("mousemove", show);
+    $("phit").addEventListener("touchstart", show, {passive:true});
+    $("phit").addEventListener("touchmove", show, {passive:true});
+    $("ptip").textContent = L2("區間累積（" + hs[0].d + " 起）　策略 ", "Cumulative since " + hs[0].d + "　Strategy ") + pct(last.s) + (hasC ? L2("　共識版 ", "　Consensus ") + pct(last.c) : "") + "　0050 " + pct(last.b);
+    var sw = function(dash, wd, col){ return '<svg width="26" height="8"><line x1="0" y1="4" x2="26" y2="4" stroke="'+col+'" stroke-width="'+wd+'"'+(dash ? ' stroke-dasharray="5 4"' : '')+'/></svg>'; };
+    var lb0 = st.labels || {s: "策略", b: "0050"}, lb = {};
+    Object.keys(lb0).forEach(function(k){ lb[k] = TR(lb0[k]); });
+    $("plegend").innerHTML = '<span>'+sw(false,2.4,cS)+esc(lb.s)+'</span>' +
+      (hasC ? '<span>'+sw(false,2,cC)+esc(lb.c || L2("共識版", "Consensus"))+'</span>' : '') +
+      '<span>'+sw(true,1.6,cB)+esc(lb.b)+'</span>';
+    var sx = V.stats || {}, box = function(k){ var q = sx[k] || {};
+      return '<div><b>'+esc(lb[k])+'</b>'+L2("年化 TWR ", "Ann. TWR ")+'<span>'+fmt1(q.cagr)+'%</span>　'+L2("最大回撤 ", "Max DD ")+'<span>'+fmt1(q.mdd)+'%</span></div>'; };
+    $("pstats").innerHTML = box("s") + (hasC && sx.c ? box("c") : "") + box("b");
+    // 三方績效表（全窗，不隨 6 月／1 年切換）：資料有 table 才畫
+    var tb = st.table, tr = V.table || (tb && tb.rows), keys = ["b", "s", "c"].filter(function(k){ return tr && tr[k]; });
+    if(keys.length >= 2){
+      var money = function(v){ return LANG === "en" ? (v >= 1e6 ? "NT$" + (v / 1e6).toFixed(2) + "M" : "NT$" + Math.round(v / 1e3) + "K")
+                                                       : (v / 10000).toFixed(1) + " 萬"; },
+          sg = function(v){ return (v >= 0 ? "+" : "") + fmt1(v) + "%"; },
+          f2 = function(v){ return (+v).toFixed(2); };
+      var R = [
+        ["grp", L2("定期定額（每月投入 1 萬；擇時策略含跌深額外投入）", "Monthly investing (NT$10,000/month; timing strategies add extra on deep dips)")],
+        ["invest", L2("累積投入", "Total invested"), money, 0], ["value", L2("期末市值", "Ending value"), money, 0], ["ret", L2("累積報酬率", "Cumulative return"), sg, 1],
+        ["xirr", L2("年化報酬（XIRR）", "Annualized return (XIRR)"), sg, 1], ["dmdd", L2("市值最大回撤", "Max drawdown of value"), sg, 1],
+        ["grp", L2("單筆（期初一次投入）", "Lump sum (invested once at the start)")],
+        ["cagr", L2("年化 TWR", "Annualized TWR"), sg, 1], ["mdd", L2("最大回撤", "Max drawdown"), sg, 1],
+        ["calmar", L2("Calmar（年化÷回撤）", "Calmar (return ÷ drawdown)"), f2, 1], ["sharpe", "Sharpe", f2, 1]
+      ];
+      var t = '<caption>' + L2('期間 ', 'Period ') + esc(V.from) + ' ～ ' + esc(V.to) + (WS.length ? '' : L2('（全期，不隨上方區間切換）', ' (full period)')) + '</caption><thead><tr><th></th>' +
+        keys.map(function(k){ return '<th>' + esc(String(lb[k] || k).replace(/（.*?）|\s*\(.*?\)/g, "")) + '</th>'; }).join("") + '</tr></thead><tbody>';
+      R.forEach(function(r){
+        if(r[0] === "grp"){ t += '<tr class="grp"><td colspan="' + (keys.length + 1) + '">' + r[1] + '</td></tr>'; return; }
+        var vals = keys.map(function(k){ return tr[k][r[0]]; }), best = r[3] ? Math.max.apply(null, vals) : null;
+        t += '<tr><td>' + r[1] + '</td>' + vals.map(function(v){
+          return '<td' + (best !== null && v === best ? ' class="best"' : '') + '>' + r[2](v) + '</td>'; }).join("") + '</tr>';
+      });
+      $("ptable").innerHTML = t + '</tbody>';
+      $("ptable").classList.remove("hidden");
+    } else { $("ptable").classList.add("hidden"); }
+    $("pname").textContent = TR(st.name || "近三年策略回測");
+    $("pnote").textContent = TR(st.note || "") + (LANG === "en" ? " " : "") + (tb && tb.note ? TR(tb.note) : "") + (WS.length
+        ? L2("（所選期間的曲線與數字皆自該期間第一天起重新計算。）", " Curves and figures for the selected period are recomputed from its first day.")
+        : L2("（年化與最大回撤為 " + st.from + " ～ " + st.to + " 全期。）", " (Annualized return and max drawdown cover " + st.from + " – " + st.to + ".)"));
+  }
+  $("pseg").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    if(b.hasAttribute("data-k")){ perfKey = b.getAttribute("data-k"); if(window.__rep) drawPerf(window.__rep); return; }
+    perfN = +b.getAttribute("data-n");
+    Array.prototype.forEach.call($("pseg").children, function(x){ x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+    if(window.__rep) drawPerf(window.__rep);
+  });
+
+  function render(rep){
+    EN = (rep.i18n && rep.i18n.en) || {};
+    var t = rep.twgfi || {};
+    // 頁首
+    $("meta").innerHTML = L2("資料日期 ", "Data date ") + "<b>" + esc(dateZh(rep.as_of)) + "</b>" +
+      (rep.updated_at ? L2("　·　更新於 ", "　·　Updated ") + esc(rep.updated_at.slice(0,16).replace("T"," ")) + L2("", " (Taiwan time)") : "");
+    if(rep.updated_at){
+      var age = (Date.now() - new Date(rep.updated_at).getTime()) / 86400000;
+      if(age > 4){ $("stale").style.display = "block";
+        $("stale").textContent = L2("資料已 " + Math.floor(age) + " 天未更新（可能為連假或資料源延遲），以下為 " + rep.as_of + " 的數據。",
+          "Data has not been updated for " + Math.floor(age) + " days (possibly a holiday or a source delay); figures below are as of " + rep.as_of + "."); }
+    }
+    // 主視覺：有 v3 就以 v3（百分位）為主；沒有就退回 v1
+    var v3 = rep.twgfi_v3, main = v3 || t;
+    var arrow = function(dv){ return (dv > 0 ? "▲ +" : dv < 0 ? "▼ " : "") + Number(dv).toFixed(1); };
+    $("heroName").textContent = v3 ? TR(v3.name || "國際慣例版") : L2("恐懼與貪婪指數", "Fear & Greed Index");
+    if(has(main.value)){
+      var b = bandOf(rep, main.value), col = b ? cssVar(b.color) : cssVar("ink");
+      $("gv").textContent = fmt1(main.value); $("gv").style.color = col;
+      $("gl").textContent = TR(main.label_zh || (b && b.label) || ""); $("gl").style.color = col;
+      $("gs").textContent = !v3 ? "" : LANG === "en"
+        ? "Percentile over " + TR(v3.window_label || "") + (v3.smooth_days ? " (" + v3.smooth_days + "-day avg)" : "") +
+          (has(v3.daily_pct) ? "　·　Today " + fmt1(v3.daily_pct) : "") + (has(v3.raw) ? "　·　Raw score " + fmt1(v3.raw) : "")
+        : ((v3.window_label || "") + "百分位" + (v3.smooth_days ? "（" + v3.smooth_days + " 日平均）" : "") +
+          (has(v3.daily_pct) ? "　·　當日 " + fmt1(v3.daily_pct) : "") + (has(v3.raw) ? "　·　原始分數 " + fmt1(v3.raw) : ""));
+      if(has(main.delta)) $("gd").textContent = (v3 ? L2("百分位較前一交易日 ", "Percentile vs. previous trading day ") : L2("較前一交易日 ", "vs. previous trading day ")) + arrow(main.delta);
+      drawGauge(rep, main.value);
+    } else { $("sec-hero").classList.add("hidden"); }
+
+    // v1 卡（只在 v3 當主視覺時出現）
+    if(v3 && has(t.value)){
+      var b1 = bandOf(rep, t.value), c1 = b1 ? cssVar(b1.color) : cssVar("ink");
+      $("v1name").textContent = TR(t.name || "台灣實務版 TWGFI");
+      $("v1v").textContent = fmt1(t.value); $("v1v").style.color = c1;
+      $("v1l").textContent = TR(t.label_zh || (b1 && b1.label) || ""); $("v1l").style.color = c1;
+      $("v1d").textContent = has(t.delta) ? L2("較前一交易日 ", "vs. previous trading day ") + arrow(t.delta) : "";
+      $("v1strip").innerHTML = (t.bands || []).map(function(bd){
+        return '<b style="width:'+(bd.hi-bd.lo)+'%;background:'+cssVar(bd.color)+'"></b>'; }).join("");
+      $("v1mark").style.left = Math.max(0, Math.min(100, t.value)) + "%";
+      $("sec-v1").classList.remove("hidden");
+      var vol = ((rep.components && rep.components.items) || []).filter(function(c){ return c.key === "volatility"; })[0];
+      $("whyNow").textContent = "";   // 2026-09-26 使用者：不揭露兩版差在哪個面向
+      $("v3note").textContent = TR(v3.note || "");
+      $("sec-why").classList.remove("hidden");
+      $("aboutV3").classList.remove("hidden");
+    }
+
+    // 對照列
+    var pillOf = function(v){ if(!has(v)) return '<div class="pill">—</div>'; var bb = bandOf(rep, v);
+      return '<div class="pill">'+fmt1(v)+(bb ? '<span style="background:'+cssVar(bb.color)+'">'+esc(TR(bb.label))+'</span>' : '')+'</div>'; };
+    var byKey = function(arr){ var o = {}; (arr || []).forEach(function(c){ o[c.key] = c; }); return o; };
+    var cmp;
+    if(v3){
+      var a = byKey(v3.compare), k1 = byKey(t.compare);
+      a.prev = {v: v3.prev, d: t.prev_date};
+      cmp = '<li class="h"><div class="k"></div><div class="two"><div class="pill">'+L2("國際版", "Intl.")+'</div><div class="pill">'+L2("實務版", "Practitioner")+'</div></div></li>' +
+        [["prev","前一交易日"],["week","一週前"],["month","一個月前"],["year","一年前"]].map(function(kl){ kl = [kl[0], TR(kl[1])];
+          var x3 = a[kl[0]], x1 = k1[kl[0]], d = (x1 && x1.d) || (x3 && x3.d);
+          return '<li><div class="k">'+kl[1]+(d ? '<i>'+esc(d)+'</i>' : '')+'</div><div class="two">'+
+            pillOf(x3 && x3.v)+pillOf(x1 && x1.v)+'</div></li>';
+        }).join("");
+    } else {
+      cmp = (t.compare || []).map(function(c){
+        return '<li><div class="k">'+esc(TR(c.label))+(c.d && c.key!=="year_avg" ? '<i>'+esc(c.d)+'</i>' : '')+'</div>'+pillOf(c.v)+'</li>';
+      }).join("");
+    }
+    $("cmp").innerHTML = cmp;
+    if(has(rep.taiex)){
+      var pc = has(rep.taiex_chg_pct) ? "（" + (rep.taiex_chg_pct > 0 ? "+" : "") + Number(rep.taiex_chg_pct).toFixed(2) + "%）" : "";
+      if(LANG === "en") pc = pc.replace("（", " (").replace("）", ")");
+      $("taiex").innerHTML = L2("加權指數收盤 ", "TAIEX close ") + "<b>" + Number(rep.taiex).toLocaleString(LANG === "en" ? "en-US" : "zh-TW", {maximumFractionDigits:2}) + "</b>" + pc;
+    }
+    drawChart(rep);
+    drawPerf(rep);
+
+    // 解讀
+    var n = rep.narrative, f = rep.facets;
+    if(n || (f && ((f.risk_on||[]).length || (f.pressure||[]).length))){
+      $("nt").textContent = n ? TR(n.title) : "";
+      $("np").innerHTML = n ? (n.paragraphs || []).map(function(p){ return "<p>"+esc(TR(p))+"</p>"; }).join("") : "";
+      var fx = "";
+      var list = function(a){ return "<ul>" + a.map(function(x){ return "<li>"+esc(TR(x))+"</li>"; }).join("") + "</ul>"; };
+      if(f && (f.risk_on||[]).length) fx += '<div class="facet on"><h4>'+L2("風險承擔面", "Risk-taking side")+'</h4>'+list(f.risk_on)+'</div>';
+      if(f && (f.pressure||[]).length) fx += '<div class="facet pr"><h4>'+L2("結構壓力面", "Structural pressure side")+'</h4>'+list(f.pressure)+'</div>';
+      if(f && (f.divergence||[]).length) fx += '<div class="facet dv"><h4>'+L2("衍生品分歧", "Derivatives divergence")+'</h4>'+list(f.divergence)+'</div>';
+      $("facets").innerHTML = fx;
+    } else { $("sec-nar").classList.add("hidden"); }
+
+    // 組成面向
+    var items = (rep.components && rep.components.items) || [];
+    if(items.length){
+      $("comps").innerHTML = items.map(function(c){
+        var col = cssVar(c.color || "neutral"), v = Math.max(0, Math.min(1, +c.value || 0));
+        var dirNote = c.direction === "fear" ? L2("數值越高越恐懼", "Higher = more fear") : c.direction === "greed" ? L2("數值越高越樂觀", "Higher = more optimism") : L2("僅描述部位方向", "Describes positioning only");
+        if(rep.twgfi_v3 && c.key === "volatility") dirNote = L2("國際版 v3：越高越恐懼｜實務版 v1：略作調整", "Intl. v3: higher = more fear | Practitioner v1: slightly adjusted");
+        return '<div class="comp"><div class="top"><div><div class="name">'+esc(TR(c.label))+'</div><div class="grp">'+esc(TR(c.group||""))+'</div></div>'+
+          '<div class="num">'+Number(c.value).toFixed(2)+'</div></div>'+
+          '<div class="bar"><i style="left:'+(v*100).toFixed(1)+'%;background:'+col+'"></i></div>'+
+          '<div class="st" style="color:'+col+'">'+esc(TR(c.state || ""))+'</div>'+
+          (has(c.raw) ? '<div class="sub">'+esc(TR(c.raw_label || L2("原始值", "Raw value")))+' '+Number(c.raw).toFixed(2)+'</div>' : '')+
+          '<div class="sub">'+dirNote+'</div></div>';
+      }).join("");
+      $("cnote").textContent = TR(rep.components.note || "") + (items.length < 8 ? L2("（今日有 " + (8-items.length) + " 個面向資料未更新）", " (" + (8-items.length) + " component(s) not updated today)") : "");
+      var ref = rep.reference && rep.reference.items && rep.reference.items[0];
+      $("ref").innerHTML = ref ? '<p class="note">'+L2("對照：", "Reference: ")+esc(TR(ref.label))+' <b>'+Number(ref.raw).toFixed(2)+'</b>'+L2("（", " (")+esc(TR(ref.state||""))+L2("）。", "). ")+esc(TR(rep.reference.note||""))+'</p>' : "";
+    } else { $("sec-comp").classList.add("hidden"); }
+
+    // 總經
+    var m = rep.macro;
+    if(m && (m.light || m.leading)){
+      var h = "";
+      if(m.light){ var L = m.light;
+        h += '<div class="mbox"><div class="t">'+esc(TR(L.label))+'</div><div class="v"><span class="dot" style="background:'+cssVar(L.color||"neutral")+'"></span>'+esc(TR(L.flag_label))+'　'+esc(L.score)+L2(' 分', ' pts')+'</div>'+
+             '<div class="s">'+L2("資料月份 ", "Data month ")+esc(L.ref_month||"—")+'　·　'+L2("公布日 ", "Released ")+esc(L.published_at||"—")+'　·　'+esc(TR(L.source||""))+'</div></div>'; }
+      if(m.leading && has(m.leading.mom_chg)){ var G = m.leading;
+        h += '<div class="mbox"><div class="t">'+esc(TR(G.label))+L2('（月變動）', ' (month-on-month change)')+'</div><div class="v">'+(G.mom_chg > 0 ? "+" : "")+Number(G.mom_chg).toFixed(2)+esc(G.unit||"")+'</div>'+
+             '<div class="s">'+L2("資料月份 ", "Data month ")+esc(G.ref_month||"—")+'　·　'+esc(TR(G.source||""))+'</div></div>'; }
+      $("macro").innerHTML = h; $("mnote").textContent = TR(m.note || "");
+    } else { $("sec-macro").classList.add("hidden"); }
+
+    $("disc").textContent = TR(rep.disclaimer || "");
+  }
+
+  fetch("data/daily_report.json", {cache: "no-cache"})
+    .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+    .then(function(rep){ window.__rep = rep; $("app").classList.remove("hidden"); render(rep); })
+    .catch(function(e){ if(window.console) console.error(e); $("meta").textContent = ""; $("err").classList.remove("hidden"); });
+})();
+</script>
+</body>
+</html>
